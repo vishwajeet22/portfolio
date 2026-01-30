@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.log
+.adk/
+.env
+.DS_Store
+node_modules/
+.next/
+dist/
+build/
