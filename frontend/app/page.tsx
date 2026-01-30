@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import TimelineNav from '../components/TimelineNav';
+import SliderNav from '../components/SliderNav';
 import ProfileSidebar from '../components/ProfileSidebar';
 import Onboarding from '../components/Onboarding';
 import { Send, Sparkles } from 'lucide-react';
@@ -137,7 +137,7 @@ export default function Home() {
         </h1>
       </div>
 
-      <TimelineNav />
+      <SliderNav />
       <ProfileSidebar />
 
       {/* Main Content Area */}
