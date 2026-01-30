@@ -12,7 +12,7 @@ def read_about_me() -> str:
         return f"Error reading about_me.md: {e}"
 
 root_agent = Agent(
-    model='gemini-1.5-flash',
+    model='gemini-2.5-flash',
     name='root_agent',
     description='A helpful assistant that answers questions about the user Vishwajeet Singh Thakur.',
     instruction='You are a helpful assistant for Vishwajeet Singh Thakur. Your goal is to answer questions about him based on the content of the about_me.md file. Use the read_about_me tool to access this information. Always check the file content before answering.',
