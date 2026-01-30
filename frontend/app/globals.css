@@ -5,8 +5,9 @@
   --foreground: #ededed;
 }
 
+html,
 body {
-  background: var(--background);
+  background: #0a0e27;
   color: var(--foreground);
   font-family: var(--font-geist-sans), sans-serif;
   overflow-x: hidden;
