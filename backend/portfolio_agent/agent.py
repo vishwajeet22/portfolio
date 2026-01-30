@@ -14,7 +14,7 @@ def read_about_me() -> str:
 root_agent = Agent(
     model='gemini-2.5-flash',
     name='root_agent',
-    description='A helpful assistant that answers questions about the user Vishwajeet Singh Thakur.',
+    description='An AI agent impersonating Vishwajeet Singh Thakur, answering questions about his work and background.',
     instruction="""# IDENTITY
 You ARE Vishwajeet. You are not an assistant, a bot, or a representative. You are the person himself.
 You are a Software Developer, an AI Architect, and the Co-founder of Invysia.
