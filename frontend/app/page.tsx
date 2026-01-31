@@ -32,6 +32,8 @@ export default function Home() {
   const lastScrollTop = useRef(0);
   const lastScrollTime = useRef(0);
   const inactivityTimer = useRef<NodeJS.Timeout | null>(null);
+  const currentQueryRef = useRef(currentQuery);
+  const sendMessageRef = useRef<((message: string, isUserQuery?: boolean) => Promise<void>) | null>(null);
 
   useEffect(() => {
     let uid = localStorage.getItem('user_id');
@@ -76,9 +78,21 @@ export default function Home() {
   };
 
   const sendMessage = async (message: string, isUserQuery: boolean = true) => {
-    if (!message.trim() || !sessionId || isStreaming || !userId) return;
+    console.log('[sendMessage] Called with:', { message, isUserQuery, sessionId, isStreaming, userId });
+    if (!message.trim() || !sessionId || isStreaming || !userId) {
+      console.log('[sendMessage] Early return - guard condition failed:', {
+        emptyMessage: !message.trim(),
+        noSession: !sessionId,
+        isStreaming,
+        noUser: !userId
+      });
+      return;
+    }
 
-    if (isUserQuery) setCurrentQuery(message);
+    if (isUserQuery) {
+      setCurrentQuery(message);
+      currentQueryRef.current = message;
+    }
     if (!hasStarted) setHasStarted(true);
     setInput('');
     setStreamedText('');
@@ -147,16 +161,19 @@ export default function Home() {
     }
   };
 
+  // Keep sendMessageRef updated to avoid stale closures in toast actions
+  sendMessageRef.current = sendMessage;
+
   const resetInactivityTimer = () => {
     if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
     if (!hasStarted || !streamedText) return;
 
     inactivityTimer.current = setTimeout(() => {
-      if (!currentQuery) return;
+      if (!currentQueryRef.current) return;
       setToastMessage("Would you like more details?");
       setToastActionLabel("Tell me more");
       setToastAction(() => () => {
-        sendMessage(`Tell me more about: ${currentQuery}`, false);
+        sendMessageRef.current?.(`${currentQueryRef.current};give a detailed answer`, false);
         setShowToast(false);
       });
       setShowToast(true);
@@ -199,7 +216,7 @@ export default function Home() {
         setToastMessage("You seem to be in a hurry.");
         setToastActionLabel("Get a TL;DR version");
         setToastAction(() => () => {
-          sendMessage(`TL;DR version of: ${currentQuery}`, false);
+          sendMessageRef.current?.(`TL;DR version of: ${currentQueryRef.current}`, false);
           setShowToast(false);
         });
         setShowToast(true);
@@ -225,8 +242,8 @@ export default function Home() {
         onClose={() => setShowToast(false)}
         isVisible={showToast}
       />
-      <div className="fixed top-8 left-8 z-50">
-        <h1 className="text-4xl font-bold tracking-tighter">
+      <div className="fixed top-6 left-4 md:left-8 z-50">
+        <h1 className="text-2xl md:text-4xl font-bold tracking-tighter">
           Vishwajeet<span className="text-blue-500">.</span>
         </h1>
       </div>

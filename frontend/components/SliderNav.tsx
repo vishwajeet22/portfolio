@@ -53,54 +53,54 @@ export default function SliderNav({ onQuery }: SliderNavProps) {
   }, [activeIndex]);
 
   const handleStart = (clientX: number) => {
-      if (!sliderRef.current) return;
-      setIsDragging(true);
+    if (!sliderRef.current) return;
+    setIsDragging(true);
 
-      const currentLeft = parseFloat(sliderRef.current.style.left || '0');
-      dragStartRef.current = { x: clientX, left: currentLeft };
+    const currentLeft = parseFloat(sliderRef.current.style.left || '0');
+    dragStartRef.current = { x: clientX, left: currentLeft };
 
-      // Disable transition immediately
-      setSliderStyle(prev => ({ ...prev, transition: 'none' }));
+    // Disable transition immediately
+    setSliderStyle(prev => ({ ...prev, transition: 'none' }));
   };
 
   const handleMove = (clientX: number) => {
-      if (!isDragging || !dragStartRef.current || !navRef.current) return;
+    if (!isDragging || !dragStartRef.current || !navRef.current) return;
 
-      const diff = clientX - dragStartRef.current.x;
-      const navWidth = navRef.current.offsetWidth;
-      const itemWidth = navWidth / ITEMS.length;
-      const maxLeft = navWidth - itemWidth;
+    const diff = clientX - dragStartRef.current.x;
+    const navWidth = navRef.current.offsetWidth;
+    const itemWidth = navWidth / ITEMS.length;
+    const maxLeft = navWidth - itemWidth;
 
-      let newLeft = dragStartRef.current.left + diff;
-      newLeft = Math.max(0, Math.min(maxLeft, newLeft));
+    let newLeft = dragStartRef.current.left + diff;
+    newLeft = Math.max(0, Math.min(maxLeft, newLeft));
 
-      setSliderStyle(prev => ({ ...prev, left: `${newLeft}px` }));
+    setSliderStyle(prev => ({ ...prev, left: `${newLeft}px` }));
   };
 
   const handleEnd = () => {
-      if (!isDragging || !navRef.current || !sliderRef.current) return;
-      setIsDragging(false);
-      dragStartRef.current = null;
+    if (!isDragging || !navRef.current || !sliderRef.current) return;
+    setIsDragging(false);
+    dragStartRef.current = null;
 
-      const currentLeft = parseFloat(sliderRef.current.style.left || '0');
-      const navWidth = navRef.current.offsetWidth;
-      const itemWidth = navWidth / ITEMS.length;
+    const currentLeft = parseFloat(sliderRef.current.style.left || '0');
+    const navWidth = navRef.current.offsetWidth;
+    const itemWidth = navWidth / ITEMS.length;
 
-      const newIndex = Math.round(currentLeft / itemWidth);
+    const newIndex = Math.round(currentLeft / itemWidth);
 
-      // If index changed, setActiveIndex will trigger useEffect -> updateSlider
-      if (newIndex !== activeIndex) {
-        setActiveIndex(newIndex);
+    // If index changed, setActiveIndex will trigger useEffect -> updateSlider
+    if (newIndex !== activeIndex) {
+      setActiveIndex(newIndex);
 
-        const item = ITEMS[newIndex];
-        const prompt = PROMPTS[item];
-        if (prompt && onQuery) {
-          onQuery(prompt);
-        }
-      } else {
-        // If index didn't change, we still need to snap back to center
-        updateSlider(activeIndex, true);
+      const item = ITEMS[newIndex];
+      const prompt = PROMPTS[item];
+      if (prompt && onQuery) {
+        onQuery(prompt);
       }
+    } else {
+      // If index didn't change, we still need to snap back to center
+      updateSlider(activeIndex, true);
+    }
   };
 
   useEffect(() => {
@@ -110,55 +110,55 @@ export default function SliderNav({ onQuery }: SliderNavProps) {
     const onTouchEnd = () => handleEnd();
 
     if (isDragging) {
-        window.addEventListener('mousemove', onMouseMove);
-        window.addEventListener('mouseup', onMouseUp);
-        window.addEventListener('touchmove', onTouchMove);
-        window.addEventListener('touchend', onTouchEnd);
+      window.addEventListener('mousemove', onMouseMove);
+      window.addEventListener('mouseup', onMouseUp);
+      window.addEventListener('touchmove', onTouchMove);
+      window.addEventListener('touchend', onTouchEnd);
     }
     return () => {
-        window.removeEventListener('mousemove', onMouseMove);
-        window.removeEventListener('mouseup', onMouseUp);
-        window.removeEventListener('touchmove', onTouchMove);
-        window.removeEventListener('touchend', onTouchEnd);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('touchend', onTouchEnd);
     };
   }, [isDragging]);
 
   return (
-    <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 max-w-[90vw]">
-      <div
-        ref={navRef}
-        className="relative flex items-center justify-between"
-        // Ensure the container has enough width but can shrink if needed on small screens
-        // Using a fixed width or percentage might be better for "equal width" assumption
-        style={{ width: '600px', maxWidth: '100%' }}
-      >
+    <nav className="fixed top-6 left-0 right-0 z-40 flex justify-center pl-[200px] pr-4 md:pl-0 md:pr-0">
+      {/* Outer wrapper for horizontal scroll on mobile */}
+      <div className="overflow-x-auto scrollbar-hide max-w-full">
         <div
-          ref={sliderRef}
-          className="absolute top-0 bottom-0 bg-white/10 backdrop-blur-md rounded-full border border-white/20 shadow-lg cursor-grab active:cursor-grabbing z-0"
-          style={sliderStyle}
-          onMouseDown={(e) => handleStart(e.clientX)}
-          onTouchStart={(e) => handleStart(e.touches[0].clientX)}
+          ref={navRef}
+          className="relative flex items-center justify-between min-w-max"
+          style={{ width: '600px' }}
         >
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-1 bg-white/30 rounded-full pointer-events-none" />
-        </div>
-
-        {ITEMS.map((item, index) => (
           <div
-            key={item}
-            className={`nav-item relative z-10 flex-1 py-3 text-sm font-medium transition-colors duration-300 cursor-pointer select-none text-center ${
-              index === activeIndex ? 'text-white' : 'text-white/60 hover:text-white/80'
-            }`}
-            onClick={() => {
-              setActiveIndex(index);
-              const prompt = PROMPTS[item];
-              if (prompt && onQuery) {
-                onQuery(prompt);
-              }
-            }}
+            ref={sliderRef}
+            className="absolute top-0 bottom-0 bg-white/10 backdrop-blur-md rounded-full border border-white/20 shadow-lg cursor-grab active:cursor-grabbing z-0"
+            style={sliderStyle}
+            onMouseDown={(e) => handleStart(e.clientX)}
+            onTouchStart={(e) => handleStart(e.touches[0].clientX)}
           >
-            {item}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-1 bg-white/30 rounded-full pointer-events-none" />
           </div>
-        ))}
+
+          {ITEMS.map((item, index) => (
+            <div
+              key={item}
+              className={`nav-item relative z-10 flex-1 py-3 px-4 text-sm font-medium transition-colors duration-300 cursor-pointer select-none text-center whitespace-nowrap ${index === activeIndex ? 'text-white' : 'text-white/60 hover:text-white/80'
+                }`}
+              onClick={() => {
+                setActiveIndex(index);
+                const prompt = PROMPTS[item];
+                if (prompt && onQuery) {
+                  onQuery(prompt);
+                }
+              }}
+            >
+              {item}
+            </div>
+          ))}
+        </div>
       </div>
     </nav>
   );
