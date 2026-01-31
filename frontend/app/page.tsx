@@ -154,7 +154,7 @@ export default function Home() {
       ) : (
         <div className="flex flex-col h-screen items-center justify-center p-4 max-w-4xl mx-auto pt-20 pb-32 relative z-10">
           {/* Output Display */}
-          <div className="flex-1 w-full flex flex-col items-center justify-center text-center space-y-8 overflow-y-auto scrollbar-hide p-4">
+          <div className="flex-1 w-full flex flex-col items-center justify-start text-center space-y-8 overflow-y-auto scrollbar-hide p-4 pt-36 pb-36">
             {!streamedText && !isStreaming && (
               <div className="opacity-50 space-y-4">
                 <Sparkles className="w-12 h-12 mx-auto mb-4 text-blue-500" />
@@ -162,7 +162,7 @@ export default function Home() {
               </div>
             )}
             {(streamedText || isStreaming) && (
-              <div className="w-full text-center">
+              <div className="w-full text-center mb-24">
                 <div className="text-2xl md:text-3xl font-light leading-relaxed animate-in fade-in duration-500 whitespace-pre-wrap">
                   {streamedText}
                   {isStreaming && <span className="animate-pulse inline-block ml-1">_</span>}
@@ -172,7 +172,7 @@ export default function Home() {
           </div>
 
           {/* Input Area */}
-          <div className="w-full max-w-2xl relative z-50">
+          <div className="w-full max-w-2xl relative z-50 mt-8">
             <form onSubmit={handleSubmit} className="relative">
               <input
                 type="text"
