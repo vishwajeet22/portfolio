@@ -242,8 +242,8 @@ export default function Home() {
         onClose={() => setShowToast(false)}
         isVisible={showToast}
       />
-      <div className="fixed top-8 left-8 z-50">
-        <h1 className="text-4xl font-bold tracking-tighter">
+      <div className="fixed top-6 left-4 md:left-8 z-50">
+        <h1 className="text-2xl md:text-4xl font-bold tracking-tighter">
           Vishwajeet<span className="text-blue-500">.</span>
         </h1>
       </div>
