@@ -57,11 +57,10 @@ export default function Home() {
     setHasStarted(true);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim() || !sessionId || isStreaming || !userId) return;
+  const sendMessage = async (message: string) => {
+    if (!message.trim() || !sessionId || isStreaming || !userId) return;
 
-    const message = input;
+    if (!hasStarted) setHasStarted(true);
     setInput('');
     setStreamedText('');
     setIsStreaming(true);
@@ -129,6 +128,11 @@ export default function Home() {
     }
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await sendMessage(input);
+  };
+
   return (
     <main className="min-h-screen bg-black text-white relative overflow-hidden font-sans selection:bg-blue-500 selection:text-white">
       <div className="fixed top-8 left-8 z-50">
@@ -137,7 +141,7 @@ export default function Home() {
         </h1>
       </div>
 
-      <SliderNav />
+      <SliderNav onQuery={sendMessage} />
       <ProfileSidebar />
 
       {/* Main Content Area */}

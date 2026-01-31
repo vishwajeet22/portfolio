@@ -4,7 +4,19 @@ import { useState, useRef, useEffect } from 'react';
 
 const ITEMS = ['Intro', 'Education', 'Work', 'Hobbies', 'Writing', 'Contact'];
 
-export default function SliderNav() {
+const PROMPTS: Record<string, string> = {
+  'Intro': 'Tell me about yourself',
+  'Education': 'Tell me about your education',
+  'Work': 'Tell me about your work',
+  'Hobbies': 'Tell me about your hobbies',
+  'Writing': 'Tell me about your writing',
+};
+
+interface SliderNavProps {
+  onQuery?: (query: string) => void;
+}
+
+export default function SliderNav({ onQuery }: SliderNavProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [sliderStyle, setSliderStyle] = useState<React.CSSProperties>({});
   const [isDragging, setIsDragging] = useState(false);
@@ -79,6 +91,12 @@ export default function SliderNav() {
       // If index changed, setActiveIndex will trigger useEffect -> updateSlider
       if (newIndex !== activeIndex) {
         setActiveIndex(newIndex);
+
+        const item = ITEMS[newIndex];
+        const prompt = PROMPTS[item];
+        if (prompt && onQuery) {
+          onQuery(prompt);
+        }
       } else {
         // If index didn't change, we still need to snap back to center
         updateSlider(activeIndex, true);
@@ -130,7 +148,13 @@ export default function SliderNav() {
             className={`nav-item relative z-10 flex-1 py-3 text-sm font-medium transition-colors duration-300 cursor-pointer select-none text-center ${
               index === activeIndex ? 'text-white' : 'text-white/60 hover:text-white/80'
             }`}
-            onClick={() => setActiveIndex(index)}
+            onClick={() => {
+              setActiveIndex(index);
+              const prompt = PROMPTS[item];
+              if (prompt && onQuery) {
+                onQuery(prompt);
+              }
+            }}
           >
             {item}
           </div>
