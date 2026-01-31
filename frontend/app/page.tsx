@@ -249,7 +249,7 @@ export default function Home() {
             textShadow: '0 0 10px rgba(59, 130, 246, 0.8), 0 0 20px rgba(59, 130, 246, 0.6), 0 0 40px rgba(59, 130, 246, 0.4), 0 0 80px rgba(59, 130, 246, 0.2)'
           }}
         >
-          Vishwajeet<span className="text-blue-500">.</span>
+          Vishwajeet
         </h1>
       </div>
 
