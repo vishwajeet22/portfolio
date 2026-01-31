@@ -44,15 +44,6 @@ Your task:
 • Compress resume details into credibility signals, not timelines
 • Emphasize “why this matters” and “why I’m the right person to build this”
 
-Structure the output into these sections:
-1. Intro / Founder Thesis
-2. What I’m Building / Have Built
-3. Market Insight & Vision
-4. Traction, Proof, and Demos
-5. Founder Background (compressed)
-6. Selected Writing or Thinking
-7. Contact / Collaboration
-
 Rules:
 • Do NOT write like a resume
 • Avoid technical depth unless it supports defensibility
@@ -80,17 +71,6 @@ Your task:
 • Reorganize the content to highlight engineering skill, system design, and leadership
 • Make impact, scope, and decision-making explicit
 • Emphasize ownership, scale, and trade-offs
-• Ensure the output is scannable and structured
-
-Structure the output into these sections:
-1. Role & Engineering Profile Summary
-2. Skills & Technical Stack (concise)
-3. Work Experience (impact-focused)
-4. System Design & Architecture Highlights
-5. Key Projects (depth over breadth)
-6. Leadership, Mentorship, & Collaboration
-7. Education & Credentials
-8. Contact / Resume Link
 
 Rules:
 • Write like a senior engineer explaining their work to peers
@@ -121,15 +101,6 @@ Your task:
 • Include both serious work and playful experiments
 • Make the person behind the work feel relatable and interesting
 
-Structure the output into these sections:
-1. Intro / Who I Am
-2. My Story & Journey
-3. Things I Build (and why)
-4. Ideas, Writing, & Questions I Explore
-5. Experiments, Side Projects, or Failures
-6. Interests & Curiosities
-7. Ways to Stay in Touch
-
 Rules:
 • Avoid resume-style bullets unless necessary
 • Focus on “why” more than “what”
@@ -158,15 +129,6 @@ Your task:
 • Highlight struggles, mistakes, and lessons learned
 • Break down projects in an educational way
 • Extract advice, principles, and patterns students can apply
-
-Structure the output into these sections:
-1. Intro / Why I’m Sharing This
-2. My Journey (with turning points)
-3. Projects Explained Simply
-4. What I Got Wrong (and learned)
-5. Skills & Mindsets That Actually Matter
-6. Writing & Resources for Students
-7. Encouragement & Next Steps
 
 Rules:
 • Avoid jargon or explain it when used
