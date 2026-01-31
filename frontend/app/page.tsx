@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import SliderNav from '../components/SliderNav';
 import ProfileSidebar from '../components/ProfileSidebar';
 import Onboarding from '../components/Onboarding';
+import CosmicBackground from '../components/CosmicBackground';
 import { Send, Sparkles } from 'lucide-react';
 
 const BACKEND_URL = 'http://localhost:8000';
@@ -130,7 +131,8 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-black text-white relative overflow-hidden font-sans selection:bg-blue-500 selection:text-white">
+    <main className="min-h-screen text-white relative overflow-hidden font-sans selection:bg-blue-500 selection:text-white">
+      <CosmicBackground />
       <div className="fixed top-8 left-8 z-50">
         <h1 className="text-4xl font-bold tracking-tighter">
           Vishwajeet<span className="text-blue-500">.</span>
@@ -143,10 +145,10 @@ export default function Home() {
       {/* Main Content Area */}
       {!hasStarted ? (
         <div className="flex flex-col h-screen items-center justify-center p-4 relative z-40">
-           <Onboarding onComplete={handleUserSelection} />
+          <Onboarding onComplete={handleUserSelection} />
         </div>
       ) : (
-        <div className="flex flex-col h-screen items-center justify-center p-4 max-w-4xl mx-auto pt-20 pb-32">
+        <div className="flex flex-col h-screen items-center justify-center p-4 max-w-4xl mx-auto pt-20 pb-32 relative z-10">
           {/* Output Display */}
           <div className="flex-1 w-full flex flex-col items-center justify-center text-center space-y-8 overflow-y-auto scrollbar-hide p-4">
             {!streamedText && !isStreaming && (
