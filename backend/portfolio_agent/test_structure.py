@@ -27,21 +27,20 @@ class MockAgent:
 mock_adk_agents_llm_agent.Agent = MockAgent
 
 # Adjust sys.path to include the repository root
-# Assuming this script is located at backend/portfolio_agent/test_structure.py
 repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 if repo_root not in sys.path:
     sys.path.insert(0, repo_root)
 
 try:
     from backend.portfolio_agent import agent
-    print("Successfully imported backend.portfolio_agent.agent")
+    from backend.portfolio_agent import sub_agents
+    print("Successfully imported backend.portfolio_agent.agent and .sub_agents")
 except ImportError as e:
-    print(f"Failed to import backend.portfolio_agent.agent: {e}")
+    print(f"Failed to import modules: {e}")
     sys.exit(1)
 
-# Verify agents exist
-agents_to_check = [
-    'root_agent',
+# Verify sub-agents exist in sub_agents.py
+sub_agents_to_check = [
     'content_manager_agent',
     'investor_poc_agent',
     'recruiter_poc_agent',
@@ -49,18 +48,31 @@ agents_to_check = [
     'student_poc_agent'
 ]
 
-for agent_name in agents_to_check:
-    if hasattr(agent, agent_name):
-        print(f"Found {agent_name}")
-        obj = getattr(agent, agent_name)
+for agent_name in sub_agents_to_check:
+    if hasattr(sub_agents, agent_name):
+        print(f"Found {agent_name} in sub_agents")
+        obj = getattr(sub_agents, agent_name)
         if isinstance(obj, MockAgent):
             print(f"  - Verified {agent_name} is an Agent instance")
         else:
             print(f"  - ERROR: {agent_name} is not an Agent instance")
             sys.exit(1)
     else:
-        print(f"ERROR: {agent_name} not found in agent.py")
+        print(f"ERROR: {agent_name} not found in sub_agents.py")
         sys.exit(1)
+
+# Verify root_agent exists in agent.py
+if hasattr(agent, 'root_agent'):
+    print("Found root_agent in agent.py")
+    obj = getattr(agent, 'root_agent')
+    if isinstance(obj, MockAgent):
+        print("  - Verified root_agent is an Agent instance")
+    else:
+        print("  - ERROR: root_agent is not an Agent instance")
+        sys.exit(1)
+else:
+    print("ERROR: root_agent not found in agent.py")
+    sys.exit(1)
 
 # Verify root_agent tools
 root_agent = agent.root_agent
