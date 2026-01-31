@@ -2,13 +2,12 @@
 
 import { useState, useRef, useEffect } from 'react';
 
-const ITEMS = ['Intro', 'Education', 'Work', 'Hobbies', 'Writing', 'Contact'];
+const ITEMS = ['Intro', 'Education', 'Work', 'Writing', 'Contact'];
 
 const PROMPTS: Record<string, string> = {
   'Intro': 'Tell me about yourself',
   'Education': 'Tell me about your education',
   'Work': 'Tell me about your work',
-  'Hobbies': 'Tell me about your hobbies',
   'Writing': 'Tell me about your writing',
 };
 
