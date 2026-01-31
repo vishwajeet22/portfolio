@@ -74,7 +74,10 @@ As an Entrepreneur at Invysia, my key role is to design and build scalable agent
 
 
 # Hobbies/Writing
-In my free time I love to blog about productivity tips, learning habits and softwatre architecture. My blogs can be found on invysia.com/blogs.
+Beyond building systems, I spend time writing about productivity, learning habits, and software architecture—especially where human decision-making intersects with complex technical systems. My essays focus on practical frameworks, trade-offs, and lessons learned from building real-world products.
+My writing is published at 
+- https://dev.to/vishwajeet_singh_be18eefb
+- https://medium.com/@singhvj
 
 # Contact
 Email: vthakur@invysia.com
