@@ -1,9 +1,5 @@
 from google.adk.agents.llm_agent import Agent
 from google.adk.tools.agent_tool import AgentTool
-from google.adk.tools import MCPToolset
-from mcp import StdioServerParameters
-import sys
-import os
 from .sub_agents import (
     content_manager_agent,
     investor_poc_agent,
@@ -11,15 +7,6 @@ from .sub_agents import (
     human_poc_agent,
     student_poc_agent
 )
-
-# 1. Define how to start the server
-# Use sys.executable to ensure we use the same python environment
-# Use absolute path to ensure we find the server script regardless of CWD
-server_script = os.path.join(os.path.dirname(__file__), "mcp_server.py")
-params = StdioServerParameters(command=sys.executable, args=[server_script])
-
-# 2. Create a toolset based on those parameters
-github_tools = MCPToolset(connection_params=params)
 
 # Root Agent
 root_agent = Agent(
@@ -57,6 +44,5 @@ You are a Software Developer, an AI Architect, and the Co-founder of Invysia.
         AgentTool(agent=recruiter_poc_agent),
         AgentTool(agent=human_poc_agent),
         AgentTool(agent=student_poc_agent),
-        github_tools,
     ],
 )

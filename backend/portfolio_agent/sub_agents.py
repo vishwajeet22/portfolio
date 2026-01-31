@@ -1,5 +1,8 @@
 import os
+import sys
 from google.adk.agents.llm_agent import Agent
+from google.adk.tools import MCPToolset
+from mcp import StdioServerParameters
 
 def read_about_me() -> str:
     """Reads the about_me.md file to get information about the user."""
@@ -11,6 +14,11 @@ def read_about_me() -> str:
     except Exception as e:
         return f"Error reading about_me.md: {e}"
 
+# Configure GitHub MCP Tools
+server_script = os.path.join(os.path.dirname(__file__), "mcp_server.py")
+params = StdioServerParameters(command=sys.executable, args=[server_script])
+github_tools = MCPToolset(connection_params=params)
+
 # Content Manager Agent
 content_manager_agent = Agent(
     model='gemini-2.5-flash',
@@ -19,7 +27,7 @@ content_manager_agent = Agent(
     instruction="""You are the Content Manager Agent.
 Your responsibility is to read the 'about_me.md' file using the 'read_about_me' tool and return relevant information based on the user's query.
 Extract only the factual information relevant to the query from the file. Do not invent information.""",
-    tools=[read_about_me],
+    tools=[read_about_me, github_tools],
 )
 
 # Investor POC Agent
