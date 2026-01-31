@@ -6,8 +6,8 @@ from mcp import StdioServerParameters
 
 def read_about_me() -> str:
     """Reads the about_me.md file to get information about the user."""
-    # Since sub_agents.py is in backend_agent/, we need to go up one level
-    file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'about_me.md')
+    # about_me.md is in the same directory as this file
+    file_path = os.path.join(os.path.dirname(__file__), 'about_me.md')
     try:
         with open(file_path, 'r') as f:
             return f.read()
