@@ -243,7 +243,12 @@ export default function Home() {
         isVisible={showToast}
       />
       <div className="fixed top-6 left-4 md:left-8 z-50">
-        <h1 className="text-2xl md:text-4xl font-bold tracking-tighter">
+        <h1
+          className="text-2xl md:text-4xl font-bold tracking-tighter"
+          style={{
+            textShadow: '0 0 10px rgba(59, 130, 246, 0.8), 0 0 20px rgba(59, 130, 246, 0.6), 0 0 40px rgba(59, 130, 246, 0.4), 0 0 80px rgba(59, 130, 246, 0.2)'
+          }}
+        >
           Vishwajeet<span className="text-blue-500">.</span>
         </h1>
       </div>
