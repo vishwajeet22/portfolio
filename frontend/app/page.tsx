@@ -5,6 +5,7 @@ import SliderNav from '../components/SliderNav';
 import ProfileSidebar from '../components/ProfileSidebar';
 import Onboarding from '../components/Onboarding';
 import CosmicBackground from '../components/CosmicBackground';
+import Toast from '../components/Toast';
 import { Send, Sparkles } from 'lucide-react';
 
 const BACKEND_URL = 'http://localhost:8000';
@@ -19,6 +20,18 @@ export default function Home() {
   const [streamedText, setStreamedText] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
+
+  // Engagement Features State
+  const [currentQuery, setCurrentQuery] = useState('');
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastActionLabel, setToastActionLabel] = useState('');
+  const [toastAction, setToastAction] = useState<(() => void) | null>(null);
+
+  const textDisplayRef = useRef<HTMLDivElement>(null);
+  const lastScrollTop = useRef(0);
+  const lastScrollTime = useRef(0);
+  const inactivityTimer = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     let uid = localStorage.getItem('user_id');
@@ -62,9 +75,10 @@ export default function Home() {
     }, 100);
   };
 
-  const sendMessage = async (message: string) => {
+  const sendMessage = async (message: string, isUserQuery: boolean = true) => {
     if (!message.trim() || !sessionId || isStreaming || !userId) return;
 
+    if (isUserQuery) setCurrentQuery(message);
     if (!hasStarted) setHasStarted(true);
     setInput('');
     setStreamedText('');
@@ -133,6 +147,69 @@ export default function Home() {
     }
   };
 
+  const resetInactivityTimer = () => {
+    if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
+    if (!hasStarted || !streamedText) return;
+
+    inactivityTimer.current = setTimeout(() => {
+      if (!currentQuery) return;
+      setToastMessage("Would you like more details?");
+      setToastActionLabel("Tell me more");
+      setToastAction(() => () => {
+        sendMessage(`Tell me more about: ${currentQuery}`, false);
+        setShowToast(false);
+      });
+      setShowToast(true);
+    }, 30000); // 30 seconds
+  };
+
+  useEffect(() => {
+    const handleActivity = () => resetInactivityTimer();
+
+    window.addEventListener('mousemove', handleActivity);
+    window.addEventListener('keydown', handleActivity);
+    window.addEventListener('click', handleActivity);
+    // Scroll is handled separately
+
+    resetInactivityTimer(); // Start timer
+
+    return () => {
+      window.removeEventListener('mousemove', handleActivity);
+      window.removeEventListener('keydown', handleActivity);
+      window.removeEventListener('click', handleActivity);
+      if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
+    };
+  }, [hasStarted, streamedText, currentQuery]);
+
+  const handleScroll = () => {
+    resetInactivityTimer();
+    if (!textDisplayRef.current) return;
+
+    const now = Date.now();
+    const currentScrollTop = textDisplayRef.current.scrollTop;
+    const timeDiff = now - lastScrollTime.current;
+
+    // Check every 100ms
+    if (timeDiff > 100) {
+      const scrollDiff = Math.abs(currentScrollTop - lastScrollTop.current);
+      const speed = (scrollDiff / timeDiff) * 1000; // px/sec
+
+      // If scrolling fast (e.g., > 2000px/s) and we have content
+      if (speed > 2000 && streamedText.length > 500 && !showToast) {
+        setToastMessage("You seem to be in a hurry.");
+        setToastActionLabel("Get a TL;DR version");
+        setToastAction(() => () => {
+          sendMessage(`TL;DR version of: ${currentQuery}`, false);
+          setShowToast(false);
+        });
+        setShowToast(true);
+      }
+
+      lastScrollTime.current = now;
+      lastScrollTop.current = currentScrollTop;
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await sendMessage(input);
@@ -141,13 +218,20 @@ export default function Home() {
   return (
     <main className="min-h-screen text-white relative overflow-hidden font-sans selection:bg-blue-500 selection:text-white">
       <CosmicBackground />
+      <Toast
+        message={toastMessage}
+        actionLabel={toastActionLabel}
+        onAction={toastAction || undefined}
+        onClose={() => setShowToast(false)}
+        isVisible={showToast}
+      />
       <div className="fixed top-8 left-8 z-50">
         <h1 className="text-4xl font-bold tracking-tighter">
           Vishwajeet<span className="text-blue-500">.</span>
         </h1>
       </div>
 
-      <SliderNav onQuery={sendMessage} />
+      <SliderNav onQuery={(q) => sendMessage(q)} />
       <ProfileSidebar />
 
       {/* Main Content Area */}
@@ -158,7 +242,11 @@ export default function Home() {
       ) : (
         <div className="flex flex-col h-screen items-center justify-center p-4 max-w-4xl mx-auto pt-20 pb-32 relative z-10">
           {/* Output Display */}
-          <div className="flex-1 w-full flex flex-col items-center justify-start text-center space-y-8 overflow-y-auto scrollbar-hide p-4 pt-36 pb-36">
+          <div
+            ref={textDisplayRef}
+            onScroll={handleScroll}
+            className="flex-1 w-full flex flex-col items-center justify-start text-center space-y-8 overflow-y-auto scrollbar-hide p-4 pt-36 pb-36"
+          >
             {!streamedText && !isStreaming && (
               <div className="opacity-50 space-y-4">
                 <Sparkles className="w-12 h-12 mx-auto mb-4 text-blue-500" />
