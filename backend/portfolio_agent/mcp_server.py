@@ -12,6 +12,7 @@ def get_github_client():
         # But generally we should raise error.
         # raise ValueError("GITHUB_TOKEN environment variable not set")
         print("GITHUB_TOKEN environment variable not set")
+        return Github()
     return Github(token)
 
 @mcp.tool()
