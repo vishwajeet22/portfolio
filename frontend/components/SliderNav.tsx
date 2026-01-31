@@ -9,6 +9,7 @@ const PROMPTS: Record<string, string> = {
   'Education': 'Tell me about your education',
   'Work': 'Tell me about your work',
   'Writing': 'Tell me about your writing',
+  'Contact': 'Give me your contact details',
 };
 
 interface SliderNavProps {
