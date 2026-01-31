@@ -10,7 +10,8 @@ def get_github_client():
     if not token:
         # For testing purposes or if not set, we might fail or return a dummy if allowed.
         # But generally we should raise error.
-        raise ValueError("GITHUB_TOKEN environment variable not set")
+        # raise ValueError("GITHUB_TOKEN environment variable not set")
+        print("GITHUB_TOKEN environment variable not set")
     return Github(token)
 
 @mcp.tool()
