@@ -56,6 +56,10 @@ export default function Home() {
     setPersona(p);
     setLanguage(l);
     setHasStarted(true);
+    // Auto-trigger Intro query after onboarding
+    setTimeout(() => {
+      sendMessage('Tell me about yourself');
+    }, 100);
   };
 
   const sendMessage = async (message: string) => {
