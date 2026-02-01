@@ -8,7 +8,7 @@ import CosmicBackground from '../components/CosmicBackground';
 import Toast from '../components/Toast';
 import { Send, Sparkles } from 'lucide-react';
 
-const BACKEND_URL = 'http://localhost:8000';
+const BACKEND_URL = 'https://portfolio-agent-268314723675.us-central1.run.app';
 const APP_NAME = 'portfolio_agent';
 
 export default function Home() {
