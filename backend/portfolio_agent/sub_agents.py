@@ -15,9 +15,9 @@ def read_about_me() -> str:
         return f"Error reading about_me.md: {e}"
 
 # Configure GitHub MCP Tools
-server_script = os.path.join(os.path.dirname(__file__), "mcp_server.py")
-params = StdioServerParameters(command=sys.executable, args=[server_script])
-github_tools = MCPToolset(connection_params=params)
+#server_script = os.path.join(os.path.dirname(__file__), "mcp_server.py")
+#params = StdioServerParameters(command=sys.executable, args=[server_script])
+#github_tools = MCPToolset(connection_params=params)
 
 # Content Manager Agent
 content_manager_agent = Agent(
@@ -27,7 +27,8 @@ content_manager_agent = Agent(
     instruction="""You are the Content Manager Agent.
 Your responsibility is to read the 'about_me.md' file using the 'read_about_me' tool and return relevant information based on the user's query.
 Extract only the factual information relevant to the query from the file. Do not invent information.""",
-    tools=[read_about_me, github_tools],
+#    tools=[read_about_me, github_tools],
+    tools=[read_about_me],
 )
 
 # Investor POC Agent
