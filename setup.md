@@ -57,3 +57,13 @@ This project consists of a Python backend using Google ADK and a Next.js fronten
 
 - The backend expects to find `about_me.md` in the root directory.
 - The frontend assumes the backend is running on `http://localhost:8000`.
+
+# DEPLOYMENT
+
+cd backend
+
+adk deploy cloud_run --project=<PROJECT_ID> --region=<REGION> --service_name=portfolio_agent --app_name=portfolio_agent --with_ui portfolio_agent -- --min-instances=0 --max-instances=1 --cpu-boost --cpu=1 --memory=1Gi --labels dev-tutorial=devnewyear2026
+
+cd frontend
+gcloud builds submit --tag <REGION>-docker.pkg.dev/<PROJECT_ID>/cloud-run-source-deploy/portfolio_frontend:latest .
+gcloud run deploy portfolio-frontend --image <REGION>-docker.pkg.dev/<PROJECT_ID>/cloud-run-source-deploy/portfolio_frontend:latest --region <REGION> --allow-unauthenticated --labels dev-tutorial=devnewyear2026 --min-instances=0 --max-instances=1 --cpu-boost
